@@ -188,7 +188,6 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 	strcpy(fileopen, "./doc/");
 	strcat(fileopen, filename);
 	strcat(fileopen, ".txt");
-	printf("%s\n", fileopen);
 	infile = fopen((const char*)fileopen, mode);
 	if (infile == NULL) {
 		printf("Erro ao abrir o arquivo ou arquivo não encontrado!\nFechando o programa\n");
