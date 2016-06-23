@@ -174,21 +174,41 @@ user read_new_user() {
 		if (counter == 0) {
 			fprintf(infile, "ID|NOME COMPLETO|PRIMEIRO NOME|ÚLTIMO NOME|LOGIN SGO|SENHA SGO|LOGIN SKYPE|SENHA SKYPE|EMAIL BASIS|SENHA EMAIL\n");
 		}
+		else if (counter < 0) {
+			printf("Erro ao ler os registros!!!\n");
+		}
 		else {
-			/*to implement*/
+			new_user.id = (unsigned int)counter;
+			fprintf(infile, "%u|%s|%s|%s|%s|%s|%s|%s|%s|%s\n", new_user.id, new_user.fullname, new_user.firstname, new_user.lastname, new_user.loginsgo, new_user.passwrd, new_user.loginskype, new_user.passwrd, new_user.email, new_user.passwrdstd);
 		}
 		fclose(infile);
 	}
+	fflush_in();
+	printf("Deseja gerar email para usuário? [S\\n]: ");
+	option = getchar();
+	if (option == '\n') {
+		/*nothing*/
+	}
+	if (tolower(option) != 's') {
+		/*nothing*/
+	}
+	else {
+		make_email(infile, new_user);
+	}
+
 	return new_user;
 }
 
 FILE* open_file(FILE *infile, char *filename, char *mode) {
-	char* fileopen;
-	fileopen = (char*) malloc(sizeof(char));
-	strcpy(fileopen, "./doc/");
-	strcat(fileopen, filename);
-	strcat(fileopen, ".txt");
-	infile = fopen((const char*)fileopen, mode);
+	if (strcmp(filename, fileregister) == 0) {
+		infile = fopen("./doc/registrousuarios.txt", mode);
+	}
+	else if (strcmp(filename, fileemail) == 0) {
+		infile = fopen("./doc/emailtemp.txt", mode);
+	}
+	else {
+		/*to implement*/
+	}
 	if (infile == NULL) {
 		printf("Erro ao abrir o arquivo ou arquivo não encontrado!\nFechando o programa\n");
 	}
@@ -203,3 +223,15 @@ void close_file(FILE *infile) {
 /*void save_users(FILE *infile, user profile) {
 	infile = NULL;
 }*/
+
+void make_email(FILE *infile, user profile) {
+	infile = open_file(infile, fileemail, "w+");
+	fprintf(infile, "Prezado %s\n", profile.fullname);
+	fprintf(infile, "Segue seu login e senha para acessar o SGO, Sistema de Gestão de Ocorrências da Basis:\n");
+	fprintf(infile, "login: %s\n", profile.loginsgo);
+	fprintf(infile, "senha: %s\n", profile.passwrd);
+	fprintf(infile, "\nVocê pode fazer login aqui <%s> ou acessar nosso portal <%s>, no menu \"Área Segura\" há um link para o SGO.\n", sgologinurl, portalbasis);
+	fprintf(infile, "\nEm caso de dúvidas ou dificuldade para acessar o sistema, entre em contato através do email:\n\n%s", emailadmin);
+	fprintf(infile, "\n\nAtenciosamente.\n");
+	fclose(infile);
+}

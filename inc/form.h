@@ -25,6 +25,7 @@ static const char validnumbers[] = "0123456789";
 #define skypeprefix "basis."
 #define emailposfix "@basis.com.br"
 #define fileregister "registrousuarios"
+#define fileemail "email"
 #define passwd_len 10
 #define MAXSTRING 300
 
@@ -92,5 +93,12 @@ void close_file(FILE *infile);
 */
 
  void save_users(FILE *infile, user profile);
+
+/*
+ Função para salvar usuários em um doc
+*/
+
+ void make_email(FILE *infile, user profile);
+
 
 #endif

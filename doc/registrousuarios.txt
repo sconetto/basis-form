@@ -1,0 +1,3 @@
+ID|NOME COMPLETO|PRIMEIRO NOME|ÚLTIMO NOME|LOGIN SGO|SENHA SGO|LOGIN SKYPE|SENHA SKYPE|EMAIL BASIS|SENHA EMAIL
+1|João Pedro Sconetto|joao|sconetto|joao.sconetto|jeEY#/6667|basis.joao.sconetto|jeEY#/6667|joao.sconetto@basis.com.br|basis123
+2|Guilherme Peres|guilherme|peres|guilherme.peres|ndQH*-8086|basis.guilherme.peres|ndQH*-8086|guilherme.peres@basis.com.br|basis123
