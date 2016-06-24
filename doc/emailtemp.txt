@@ -1,7 +1,7 @@
-Prezado Rafael Armênio
+Prezado João Pedro Sconetto
 Segue seu login e senha para acessar o SGO, Sistema de Gestão de Ocorrências da Basis:
-login: rafael.armenio
-senha: mcYD*!5660
+login: joao.sconetto
+senha: xvIA&-4896
 
 Você pode fazer login aqui <https://sgo.basis.com.br/login.jsp> ou acessar nosso portal <https://www.basis.com.br>, no menu "Área Segura" há um link para o SGO.
 

@@ -13,7 +13,7 @@ void read_string(char *s) {
 	s[--i] = '\0';
 	return;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void fflush_in() {
 	int ch;
 	do {
@@ -21,7 +21,7 @@ void fflush_in() {
 	} while (ch != EOF && ch != '\n');
 	return;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void show_user(user profile) {
 	printf("Nome completo do usuário: %s\n", profile.fullname);
 	printf("Primeiro nome: %s\n", profile.firstname);
@@ -33,7 +33,7 @@ void show_user(user profile) {
 	printf("Email: %s\n", profile.email);
 	return;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 char *make_passwrd() {
 	char *new_passwd;
 	int i;
@@ -58,7 +58,7 @@ char *make_passwrd() {
 	new_passwd[passwd_len] = '\0';
 	return new_passwd;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 char *validate_fullname(char *fullname) {
 	char option;
 	printf("%s\n", fullname);
@@ -80,7 +80,7 @@ char *validate_fullname(char *fullname) {
 	}
 	return fullname;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 char *validate_firstname(char *firstname) {
 	char option;
 	printf("%s\n", firstname);
@@ -102,7 +102,7 @@ char *validate_firstname(char *firstname) {
 	}
 	return firstname;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 char *validate_lastname(char *lastname) {
 	char option;
 	printf("%s\n", lastname);
@@ -124,7 +124,7 @@ char *validate_lastname(char *lastname) {
 	}
 	return lastname;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 user read_new_user() {
 	user new_user;
 	FILE* infile;
@@ -160,9 +160,24 @@ user read_new_user() {
 	printf("Deseja salvar usuário no registro? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
-		/*nothing*/
+		infile = open_file(infile, fileregister, "a+");
+		do {
+			aux = fgetc(infile);
+			if (aux == '\n') counter++;
+		} while (aux != EOF);
+		if (counter == 0) {
+			fprintf(infile, "ID|NOME COMPLETO|PRIMEIRO NOME|ÚLTIMO NOME|LOGIN SGO|SENHA SGO|LOGIN SKYPE|SENHA SKYPE|EMAIL BASIS|SENHA EMAIL\n");
+		}
+		else if (counter < 0) {
+			printf("Erro ao ler os registros!!!\n");
+		}
+		else {
+			new_user.id = (unsigned int)counter;
+			fprintf(infile, "%u|%s|%s|%s|%s|%s|%s|%s|%s|%s\n", new_user.id, new_user.fullname, new_user.firstname, new_user.lastname, new_user.loginsgo, new_user.passwrd, new_user.loginskype, new_user.passwrd, new_user.email, new_user.passwrdstd);
+		}
+		fclose(infile);
 	}
-	if (tolower(option) != 's') {
+	else if (tolower(option) != 's') {
 		new_user.id = 0;
 	}
 	else {
@@ -183,28 +198,49 @@ user read_new_user() {
 		}
 		fclose(infile);
 	}
+
 	fflush_in();
 	printf("Deseja gerar email para usuário? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
-		/*nothing*/
+		printf("Gerado email: arquivo doc/emailtemp.txt\n");
+		make_email(infile, new_user);
 	}
-	if (tolower(option) != 's') {
-		/*nothing*/
+	else if (tolower(option) != 's') {
+		printf("Pulando esta etapa\n");
 	}
 	else {
+		printf("Gerado email: arquivo doc/emailtemp.txt\n");
 		make_email(infile, new_user);
+	}
+
+	fflush_in();
+	printf("Deseja gerar script para criação do usuário? [S\\n]: ");
+	option = getchar();
+	if (option == '\n') {
+		printf("Gerado script: arquivo doc/scripttemp.txt\n");
+		make_script(infile, new_user);
+	}
+	else if (tolower(option) != 's') {
+		printf("Pulando esta etapa\n");
+	}
+	else {
+		printf("Gerado script: arquivo doc/scripttemp.txt\n");
+		make_script(infile, new_user);
 	}
 
 	return new_user;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 FILE* open_file(FILE *infile, char *filename, char *mode) {
 	if (strcmp(filename, fileregister) == 0) {
 		infile = fopen("./doc/registrousuarios.txt", mode);
 	}
 	else if (strcmp(filename, fileemail) == 0) {
 		infile = fopen("./doc/emailtemp.txt", mode);
+	}
+	else if (strcmp(filename, filescript) == 0) {
+		infile = fopen("./doc/scripttemp.txt", mode);
 	}
 	else {
 		/*to implement*/
@@ -214,16 +250,12 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 	}
 	return infile;
 }
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void close_file(FILE *infile) {
 	fclose(infile);
 	return;
 }
-
-/*void save_users(FILE *infile, user profile) {
-	infile = NULL;
-}*/
-
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void make_email(FILE *infile, user profile) {
 	infile = open_file(infile, fileemail, "w+");
 	fprintf(infile, "Prezado %s\n", profile.fullname);
@@ -234,4 +266,54 @@ void make_email(FILE *infile, user profile) {
 	fprintf(infile, "\nEm caso de dúvidas ou dificuldade para acessar o sistema, entre em contato através do email:\n\n%s", emailadmin);
 	fprintf(infile, "\n\nAtenciosamente.\n");
 	fclose(infile);
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void make_script(FILE *infile, user profile) {
+	infile = open_file(infile, filescript, "w+");
+	fprintf(infile, "dsadd");
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void clean_temps() {
+	FILE* infile;
+	int status;
+	infile = NULL;
+	status = 1;
+	status = remove("./doc/emailtemp.txt");
+	if (status == 0) {
+		printf("O email temporário foi limpo com sucesso!\n");
+		infile = open_file(infile, fileemail, "w+");
+		fclose(infile);
+		status = 1;
+	}
+	else {
+		printf("Erro ao limpar email temporário\n");
+		status = -1;
+	}
+
+	status = remove("./doc/scripttemp.txt");
+	if (status == 0) {
+		printf("O script temporário foi limpo com sucesso!\n");
+		infile = open_file(infile, filescript, "w+");
+		fclose(infile);
+		status = 1;
+	}
+	else {
+		printf("Erro ao limpar script temporário\n");
+		status = -1;
+	}
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void interface() {
+	int i  = 0 ;
+	for (i = 0; i < 14; ++i) {
+		printf("*");
+	}
+	printf("\n*   teste    *\n");
+	for (i = 0; i < 14; ++i) {
+		printf("*");
+	}
+	printf("\n");
 }

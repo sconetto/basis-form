@@ -26,6 +26,7 @@ static const char validnumbers[] = "0123456789";
 #define emailposfix "@basis.com.br"
 #define fileregister "registrousuarios"
 #define fileemail "email"
+#define filescript "script"
 #define passwd_len 10
 #define MAXSTRING 300
 
@@ -74,6 +75,11 @@ char *validate_fullname(char *fullname);
 char *validate_firstname(char *firstname);
 
 /*
+ Função para validar o primeiro nome
+*/
+char *validate_lastname(char *lastname);
+
+/*
  Função para ler os dados de um novo usuário
 */
 user read_new_user();
@@ -89,16 +95,23 @@ FILE* open_file(FILE *infile, char *filename, char *mode);
 void close_file(FILE *infile);
 
 /*
- Função para salvar usuários em um doc
+ Função para fazer o texto do email de envio para o usuário
 */
-
- void save_users(FILE *infile, user profile);
-
-/*
- Função para salvar usuários em um doc
-*/
-
  void make_email(FILE *infile, user profile);
 
+/*
+ Função para fazer o script de criação do usuário
+*/
+ void make_script(FILE *infile, user profile);
+
+/*
+ Função para limpar arquivos temporários
+*/
+ void clean_temps();
+
+/*
+ Função para imprimir uma pequena interface visual
+*/
+ void interface();
 
 #endif
