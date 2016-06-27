@@ -10,11 +10,12 @@
 *.dSYM/
 
 # Doc files
-./doc/
+doc/
 ./doc/*.txt
 
 # Obj files
-./obj/
+obj/
 ./obj/*.obj
 
 .DS_Store
+!.gitignore

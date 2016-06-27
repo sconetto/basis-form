@@ -1,1 +1,0 @@
-dsadd user "cn=João Pedro Sconetto,cn=Users,dc=basis,dc=com,dc=br" -upn joao.sconetot@basis.com.br -samid joao.sconetot -fn "Joao" -ln "Sconetot" -display "João Pedro Sconetto" -email "joao.sconetot@basis.com.br" -pwd imGO!@2327 -pwdneverexpires yes -desc "descricao" -memberOf "cn=Basis,cn=Users,dc=basis,dc=com,dc=br" "cn=jira-users,cn=Users,dc=basis,dc=com,dc=br" 
