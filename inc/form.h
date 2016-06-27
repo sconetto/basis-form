@@ -15,7 +15,7 @@
 
 static const char validcharslw[] = "abcdefghijklmnopqrstuvwxyz";
 static const char validcharsup[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-static const char validsymbols[] = "!@#$&*+-/";
+static const char validsymbols[] = "!@#$";
 static const char validnumbers[] = "0123456789";
 
 #define sgologinurl "https://sgo.basis.com.br/login.jsp"

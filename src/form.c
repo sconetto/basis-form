@@ -178,6 +178,7 @@ user read_new_user() {
 		fclose(infile);
 	}
 	else if (tolower(option) != 's') {
+		printf("Pulando esta etapa\n");
 		new_user.id = 0;
 	}
 	else {
@@ -270,8 +271,16 @@ void make_email(FILE *infile, user profile) {
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void make_script(FILE *infile, user profile) {
+	char *desc;
+	desc = (char*)malloc(sizeof(char));
 	infile = open_file(infile, filescript, "w+");
-	fprintf(infile, "dsadd");
+	fflush_in();
+	printf("Adicione uma descrição para o usuário: ");
+	read_string(desc);
+	profile.firstname[0] = toupper(profile.firstname[0]);
+	profile.lastname[0] = toupper(profile.lastname[0]);
+	fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+	fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\"-uc", profile.email, profile.passwrd, desc);
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/

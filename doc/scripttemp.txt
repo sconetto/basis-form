@@ -1,1 +1,0 @@
-net user joao.sconetto xvIA&-4896 /add /fullname:"João Pedro Sconetto"
