@@ -9,4 +9,10 @@
 # Debug files
 *.dSYM/
 
+# Doc files
+./doc/*.txt
+
+# Obj files
+./obj/*.obj
+
 .DS_Store

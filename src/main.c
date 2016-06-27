@@ -9,10 +9,13 @@ int main() {
 	sleep(2);
 	system("cls || clear");
 	interface();
-	sleep(2);
+	system("cls || clear");
 	menu = 0;
 	profile = read_new_user();
-	printf("\n\n");
+	sleep(2);
+	
+	system("cls || clear");
+	printf("Informações do novo usuário: \n");
 	show_user(profile);
 	return 0;
 }

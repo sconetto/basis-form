@@ -219,13 +219,16 @@ user read_new_user() {
 	printf("Deseja gerar script para criação do usuário? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
+		system("cls || clear");
 		printf("Gerado script: arquivo doc/scripttemp.txt\n");
 		make_script(infile, new_user);
 	}
 	else if (tolower(option) != 's') {
+		system("cls || clear");
 		printf("Pulando esta etapa\n");
 	}
 	else {
+		system("cls || clear");
 		printf("Gerado script: arquivo doc/scripttemp.txt\n");
 		make_script(infile, new_user);
 	}
@@ -271,16 +274,66 @@ void make_email(FILE *infile, user profile) {
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void make_script(FILE *infile, user profile) {
+	int i;
 	char *desc;
+	char *contract;
+	char *function;
 	desc = (char*)malloc(sizeof(char));
+	contract = (char*)malloc(sizeof(char));
+	function = (char*)malloc(sizeof(char));
 	infile = open_file(infile, filescript, "w+");
 	fflush_in();
 	printf("Adicione uma descrição para o usuário: ");
 	read_string(desc);
-	profile.firstname[0] = toupper(profile.firstname[0]);
-	profile.lastname[0] = toupper(profile.lastname[0]);
-	fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
-	fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\"-uc", profile.email, profile.passwrd, desc);
+	printf("Informe a função do usuário (Programador/Analista/Fábrica | Aperte enter ou s para usuário padrão)\nOBS: Procure digitar sem acentos e com minúsculas: ");
+	read_string(function);
+	for (i = 0; i < (int)strlen(function); ++i) {
+		function[i] = tolower(function[i]);
+	}
+
+	if (strncmp(function, "\n", 1) == 0 || strncmp(function, "\0", 1) == 0 || strncmp(function, "s", 1) == 0 || strncmp(function, "S", 1) == 0) {
+		printf("O usuário só será incluso no grupos padrões de uso do SGO!!\n");
+		sleep(1);
+		profile.firstname[0] = toupper(profile.firstname[0]);
+		profile.lastname[0] = toupper(profile.lastname[0]);
+		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+	}
+	else if (strcmp(function, "programador") == 0) {
+		printf("Informe o contrato do Programador (lembre-se de usar minúsculas | escreva o contrato do mesmo modo que no SGO): ");
+		read_string(contract);
+		profile.firstname[0] = toupper(profile.firstname[0]);
+		profile.lastname[0] = toupper(profile.lastname[0]);
+		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		fprintf(infile, "\"cn=%s-basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=%s-codificadores,cn=Users,dc=basis,dc=com,dc=br\" -uc", contract, contract);
+	}
+	else if (strcmp(function, "analista") == 0) {
+		printf("Informe o contrato do Analista (lembre-se de usar minúsculas | escreva o contrato do mesmo modo que no SGO): ");
+		read_string(contract);
+		profile.firstname[0] = toupper(profile.firstname[0]);
+		profile.lastname[0] = toupper(profile.lastname[0]);
+		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		fprintf(infile, "\"cn=%s-basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=%s-documentadores,cn=Users,dc=basis,dc=com,dc=br\" -uc", contract, contract);
+	}
+	else if (strcmp(function, "fabrica") == 0) {
+		printf("Informe a qual Fábrica o usuário pertence: \n");
+		printf("(AM | BH | BW | CD | CG | CJ | CL | CS | DG | EA | FN | FNDE | JJ | QL | TS | WO | WP): ");
+		read_string(contract);
+		for (i = 0; i < (int)strlen(function); ++i) {
+			function[i] = tolower(function[i]);
+		}
+		profile.firstname[0] = toupper(profile.firstname[0]);
+		profile.lastname[0] = toupper(profile.lastname[0]);
+		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		fprintf(infile, "\"cn=fabricas-externas,cn=Users,dc=basis,dc=com,dc=br\" \"cn=fabrica-%s,cn=Users,dc=basis,dc=com,dc=br\" -uc", contract);
+	}
+	else {
+		printf("Função não encontrada!!\nVoltando à execução...\n\n");
+	}
+	close_file(infile);
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -317,12 +370,24 @@ void clean_temps() {
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void interface() {
 	int i  = 0 ;
-	for (i = 0; i < 14; ++i) {
+	for (i = 0; i < 40; ++i) {
 		printf("*");
 	}
-	printf("\n*   teste    *\n");
-	for (i = 0; i < 14; ++i) {
+	printf("\n*   Sistema de inclusão de usuários    *\n");
+	for (i = 0; i < 40; ++i) {
+		printf("*");
+	}
+	printf("\n* Versão:  0.0.1                       *");
+	printf("\n* Autor:   João Pedro Sconetto         *");
+	printf("\n* Contato: joao.sconetto@basis.com.br  * \n*\t   sconetto.joao@gmail.com     *\n");
+	for (i = 0; i < 40; ++i) {
+		printf("*");
+	}
+	printf("\n* Licensa MIT (disponível em):         *");
+	printf("\n*               https://goo.gl/U689hW  *\n");
+	for (i = 0; i < 40; ++i) {
 		printf("*");
 	}
 	printf("\n");
+	sleep(5);
 }
