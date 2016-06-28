@@ -206,22 +206,46 @@ user read_new_user() {
 	if (option == '\n') {
 		printf("Gerado email: arquivo doc/emailtemp.txt\n");
 		make_email(infile, new_user);
+		system("cls || clear");
 	}
 	else if (tolower(option) != 's') {
 		printf("Pulando esta etapa\n");
+		system("cls || clear");
 	}
 	else {
 		printf("Gerado email: arquivo doc/emailtemp.txt\n");
 		make_email(infile, new_user);
+		system("cls || clear");
 	}
 
 	fflush_in();
-	printf("Deseja gerar script para criação do usuário? [S\\n]: ");
+	printf("Deseja gerar script para criação do usuário (SGO)? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
 		system("cls || clear");
 		printf("Gerado script: arquivo doc/scripttemp.txt\n");
 		make_script(infile, new_user);
+		system("cls || clear");
+	}
+	else if (tolower(option) != 's') {
+		system("cls || clear");
+		printf("Pulando esta etapa\n");
+		system("cls || clear");
+	}
+	else {
+		system("cls || clear");
+		printf("Gerado script: arquivo doc/scripttemp.txt\n");
+		make_script(infile, new_user);
+		system("cls || clear");
+	}
+
+	fflush_in();
+	printf("Deseja gerar script para criação do usuário (Banco de Dados)? [S\\n]: ");
+	option = getchar();
+	if (option == '\n') {
+		system("cls || clear");
+		printf("Gerado script: arquivo doc/scriptbdtemp.txt\n");
+		make_script_bd(infile, new_user);
 	}
 	else if (tolower(option) != 's') {
 		system("cls || clear");
@@ -229,8 +253,8 @@ user read_new_user() {
 	}
 	else {
 		system("cls || clear");
-		printf("Gerado script: arquivo doc/scripttemp.txt\n");
-		make_script(infile, new_user);
+		printf("Gerado script: arquivo doc/scriptbdtemp.txt\n");
+		make_script_bd(infile, new_user);
 	}
 
 	return new_user;
@@ -245,6 +269,9 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 	}
 	else if (strcmp(filename, filescript) == 0) {
 		infile = fopen("./doc/scripttemp.txt", mode);
+	}
+	else if (strcmp(filename, filescriptbd) == 0) {
+		infile = fopen("./doc/scriptbdtemp.txt", mode);
 	}
 	else {
 		/*to implement*/
@@ -337,6 +364,58 @@ void make_script(FILE *infile, user profile) {
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void make_script_bd(FILE *infile, user profile) {
+	unsigned int assignment = 0;
+	unsigned int contract = 0;
+	char *assignmenttext;
+	char *contracttext;
+	assignmenttext = (char*)malloc(sizeof(char));
+	contracttext = (char*)malloc(sizeof(char));
+	infile = open_file(infile, filescriptbd, "w+");
+	fflush_in();
+	printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n4 - Gestor de negócio\n");
+	printf("5 - Requisitante\n6 - Requisitante assistente\n7 - Todos\n");
+	printf("Qual atribuição do usuário ?: ");
+	scanf("%u", &assignment);
+	if ((assignment <= 0) || (assignment >= 8)) {
+		printf("Valor de atribuição inválida!!!\n");
+		sleep(1);
+		system("clear || cls");
+		printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n4 - Gestor de negócio\n");
+		printf("5 - Requisitante\n6 - Requisitante assistente\n7 - Todos\n");
+		printf("Qual atribuição do usuário ?: ");
+		scanf("%u", &assignment);
+		while ((assignment <= 0) || (assignment >= 8)) {
+			printf("Valor de atribuição inválida!!!\nDigite novamente a atribuição: ");
+			scanf("%u", &assignment);
+		}
+	}
+	system("clear || cls");
+	printf("Contratos já cadastrados:\n1 - AGU\t\t12 - FUNDACENTRO\n2 - BASIS\t13 - GAFISA\n3 - CADE\t14 - HUB\n");
+	printf("4 - CAMARA\t15 - IBAMA\n5 - CLDF\t16 - MARINHA\n6 - EB\t\t17 - MMA\n7 - EBCOLOG\t18 - MT\n8 - FAAP\t19 - POUPEX\n");
+	printf("9 - FDC\t\t20 - RECALL\n10 - FNDE\t21 - SDH\n11 - FUNASA\t22 - STC\n");
+	printf("Qual o contrato do usuário ?: ");
+	scanf("%u", &contract);
+	if ((contract <= 0) || (contract >= 23)) {
+		printf("Valor de contrato inválido!!!\n");
+		sleep(1);
+		system("clear || cls");
+		printf("Contratos já cadastrados:\n1 - AGU\t\t12 - FUNDACENTRO\n2 - BASIS\t13 - GAFISA\n3 - CADE\t14 - HUB\n");
+		printf("4 - CAMARA\t15 - IBAMA\n5 - CLDF\t16 - MARINHA\n6 - EB\t\t17 - MMA\n7 - EBCOLOG\t18 - MT\n8 - FAAP\t19 - POUPEX\n");
+		printf("9 - FDC\t\t20 - RECALL\n10 - FNDE\t21 - SDH\n11 - FUNASA\t22 - STC\n");
+		printf("Qual o contrato do usuário ?: ");
+		scanf("%u", &contract);
+		while ((contract <= 0) || (contract >= 23)) {
+			printf("Valor de contrato inválido!!!\nDigite novamente o contrato: ");
+			scanf("%u", &contract);
+		}
+	}
+	convert_assignement(assignmenttext, assignment);
+	convert_contract(contracttext, contract);
+	close_file(infile);
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void clean_temps() {
 	FILE* infile;
 	int status;
@@ -390,4 +469,114 @@ void interface() {
 	}
 	printf("\n");
 	sleep(5);
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void convert_assignement(char *s, unsigned int assignment) {
+	switch (assignment) {
+	case auditor:
+		strcpy(s, "auditor");
+		break;
+	case fiscalrequisitante:
+		strcpy(s, "fiscal requisitante");
+		break;
+	case fiscaltecnico:
+		strcpy(s, "fiscal técnico");
+		break;
+	case fiscaltecassistente:
+		strcpy(s, "fiscal técnico assistente");
+		break;
+	case gestor:
+		strcpy(s, "gestor de negócio");
+		break;
+	case requisitante:
+		strcpy(s, "requisitante");
+		break;
+	case requisitanteassistente:
+		strcpy(s, "requisitante assistente");
+		break;
+	case todos:
+		strcpy(s, "todos");
+		break;
+	default:
+		printf("Erro ao converter a atribuição.\nAtribuição não encontrada!!\n");
+		strcpy(s, "NULL");
+		break;
+	}
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void convert_contract(char *s, unsigned int contract) {
+	switch (contract) {
+	case agu:
+		strcpy(s, "AGU");
+		break;
+	case basis:
+		strcpy(s, "NULL");
+		break;
+	case cade:
+		strcpy(s, "CADE");
+		break;
+	case camara:
+		strcpy(s, "CAMARA");
+		break;
+	case cldf:
+		strcpy(s, "CLDF");
+		break;
+	case eb:
+		strcpy(s, "EB");
+		break;
+	case ebcolog:
+		strcpy(s, "EBCOLOG");
+		break;
+	case faap:
+		strcpy(s, "FAAP");
+		break;
+	case fdc:
+		strcpy(s, "FDC");
+		break;
+	case fnde:
+		strcpy(s, "FNDE");
+		break;
+	case funasa:
+		strcpy(s, "FUNASA");
+		break;
+	case fundacentro:
+		strcpy(s, "FUNDACENTRO");
+		break;
+	case gafisa:
+		strcpy(s, "GAFISA");
+		break;
+	case hub:
+		strcpy(s, "HUB");
+		break;
+	case ibama:
+		strcpy(s, "IBAMA");
+		break;
+	case marinha:
+		strcpy(s, "MARINHA");
+		break;
+	case mma:
+		strcpy(s, "MMA");
+		break;
+	case mt:
+		strcpy(s, "MT");
+		break;
+	case poupex:
+		strcpy(s, "POUPEX");
+		break;
+	case recall:
+		strcpy(s, "RECALL");
+		break;
+	case sdh:
+		strcpy(s, "SDH");
+		break;
+	case stc:
+		strcpy(s, "STC");
+		break;
+	default:
+		printf("Erro ao converter o contrato.\nContrato não encontrado!!\n");
+		strcpy(s, "NULL");
+		break;
+	}
+	return;
 }

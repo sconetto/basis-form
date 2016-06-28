@@ -18,6 +18,19 @@ static const char validcharsup[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const char validsymbols[] = "!@#$";
 static const char validnumbers[] = "0123456789";
 
+enum assignment {
+	auditor = 1, fiscalrequisitante, fiscaltecnico, fiscaltecassistente, gestor, requisitante, requisitanteassistente, todos
+};
+
+enum contract {
+	agu = 1, basis, cade, camara, cldf, eb, ebcolog, faap, fdc, fnde, funasa, fundacentro, 
+	gafisa, hub, ibama, marinha, mma, mt, poupex, recall, sdh, stc
+};
+
+typedef enum assignment assignment;
+
+typedef enum contract contract;
+
 #define sgologinurl "https://sgo.basis.com.br/login.jsp"
 #define portalbasis "https://www.basis.com.br"
 #define emailadmin "sgo-admins@basis.com.br"
@@ -27,6 +40,7 @@ static const char validnumbers[] = "0123456789";
 #define fileregister "registrousuarios"
 #define fileemail "email"
 #define filescript "script"
+#define filescriptbd "scriptbd"
 #define passwd_len 10
 #define MAXSTRING 300
 
@@ -97,21 +111,36 @@ void close_file(FILE *infile);
 /*
  Função para fazer o texto do email de envio para o usuário
 */
- void make_email(FILE *infile, user profile);
+void make_email(FILE *infile, user profile);
 
 /*
- Função para fazer o script de criação do usuário
+ Função para fazer o script de criação do usuário no SGO
 */
- void make_script(FILE *infile, user profile);
+void make_script(FILE *infile, user profile);
+
+/*
+ Função para fazer o script de criação do usuário no banco de dados
+*/
+void make_script_bd(FILE *infile, user profile);
 
 /*
  Função para limpar arquivos temporários
 */
- void clean_temps();
+void clean_temps();
 
 /*
  Função para imprimir uma pequena interface visual
 */
- void interface();
+void interface();
+
+/*
+ Função para converter o número da atribuição para texto
+*/
+void convert_assignement(char *s, unsigned int assignment);
+
+/*
+ Função para converter o número do contrato para texto
+*/
+void convert_contract(char *s, unsigned int contract);
 
 #endif
