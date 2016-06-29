@@ -239,6 +239,7 @@ user read_new_user() {
 		system("cls || clear");
 	}
 
+	fflush(stdin);
 	printf("Deseja gerar script para criação do usuário (Banco de Dados)? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
@@ -317,7 +318,7 @@ void make_script(FILE *infile, user profile) {
 		function[i] = tolower(function[i]);
 	}
 
-	if (strncmp(function, "\n", 1) == 0 || strncmp(function, "\0", 1) == 0 || strncmp(function, "s", 1) == 0 || strncmp(function, "S", 1) == 0) {
+	if (strncmp(function, "\n", 1) == 0 || strncmp(function, "\0", 1) == 0 || strncmp(function, "s\0", 2) == 0 || strncmp(function, "S\0", 2) == 0) {
 		printf("O usuário só será incluso no grupos padrões de uso do SGO!!\n");
 		sleep(1);
 		profile.firstname[0] = toupper(profile.firstname[0]);
@@ -358,6 +359,7 @@ void make_script(FILE *infile, user profile) {
 	}
 	else {
 		printf("Função não encontrada!!\nVoltando à execução...\n\n");
+		sleep(1);
 	}
 	close_file(infile);
 	return;
@@ -411,8 +413,35 @@ void make_script_bd(FILE *infile, user profile) {
 	}
 	convert_assignement(assignmenttext, assignment);
 	convert_contract(contracttext, contract);
-	fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
-	fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, '%s', '%s', 1)\nGO", profile.loginsgo, assignmenttext, contracttext);
+	if (strcmp(assignmenttext, "NULL") == 0) {
+		if (strcmp(contracttext, "NULL") == 0) {
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, NULL, NULL, 1)\nGO", profile.loginsgo);
+		}
+		else if (strcmp(contracttext, "NULL") != 0) {
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, NULL, '%s', 1)\nGO", profile.loginsgo, contracttext);
+		}
+		else {
+			/* nothing */
+		}
+	}
+	else if (strcmp(assignmenttext, "NULL") != 0) {
+		if (strcmp(contracttext, "NULL") == 0) {
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, '%s', NULL, 1)\nGO", profile.loginsgo, assignmenttext);
+		}
+		else if (strcmp(contracttext, "NULL") != 0) {
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, '%s', '%s', 1)\nGO", profile.loginsgo, assignmenttext, contracttext);
+		}
+		else {
+			/* nothing */
+		}
+	}
+	else {
+		/* nothing */
+	}
 	close_file(infile);
 	return;
 }
