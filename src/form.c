@@ -239,7 +239,6 @@ user read_new_user() {
 		system("cls || clear");
 	}
 
-	fflush_in();
 	printf("Deseja gerar script para criação do usuário (Banco de Dados)? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
