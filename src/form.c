@@ -373,19 +373,19 @@ void make_script_bd(FILE *infile, user profile) {
 	contracttext = (char*)malloc(sizeof(char));
 	infile = open_file(infile, filescriptbd, "w+");
 	fflush_in();
-	printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n4 - Gestor de negócio\n");
-	printf("5 - Requisitante\n6 - Requisitante assistente\n7 - Todos\n");
+	printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n5 - Gestor de negócio\n");
+	printf("6 - Requisitante\n7 - Requisitante assistente\n8 - Todos\n");
 	printf("Qual atribuição do usuário ?: ");
 	scanf("%u", &assignment);
-	if ((assignment <= 0) || (assignment >= 8)) {
+	if ((assignment <= 0) || (assignment >= 9)) {
 		printf("Valor de atribuição inválida!!!\n");
 		sleep(1);
 		system("clear || cls");
-		printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n4 - Gestor de negócio\n");
-		printf("5 - Requisitante\n6 - Requisitante assistente\n7 - Todos\n");
+		printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n5 - Gestor de negócio\n");
+		printf("6 - Requisitante\n7 - Requisitante assistente\n8 - Todos\n");
 		printf("Qual atribuição do usuário ?: ");
 		scanf("%u", &assignment);
-		while ((assignment <= 0) || (assignment >= 8)) {
+		while ((assignment <= 0) || (assignment >= 9)) {
 			printf("Valor de atribuição inválida!!!\nDigite novamente a atribuição: ");
 			scanf("%u", &assignment);
 		}
@@ -412,6 +412,8 @@ void make_script_bd(FILE *infile, user profile) {
 	}
 	convert_assignement(assignmenttext, assignment);
 	convert_contract(contracttext, contract);
+	fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+	fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, '%s', '%s', 1)\nGO", profile.loginsgo, assignmenttext, contracttext);
 	close_file(infile);
 	return;
 }
@@ -435,8 +437,20 @@ void clean_temps() {
 
 	status = remove("./doc/scripttemp.txt");
 	if (status == 0) {
-		printf("O script temporário foi limpo com sucesso!\n");
+		printf("O script do SGO temporário foi limpo com sucesso!\n");
 		infile = open_file(infile, filescript, "w+");
+		fclose(infile);
+		status = 1;
+	}
+	else {
+		printf("Erro ao limpar script temporário\n");
+		status = -1;
+	}
+
+	status = remove("./doc/scriptbdtemp.txt");
+	if (status == 0) {
+		printf("O script do BD temporário foi limpo com sucesso!\n");
+		infile = open_file(infile, filescriptbd, "w+");
 		fclose(infile);
 		status = 1;
 	}
