@@ -622,3 +622,74 @@ void convert_contract(char *s, unsigned int contract) {
 	}
 	return;
 }
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void menu_interface() {
+	int i  = 0 ;
+	printf("\t");
+	for (i = 0; i < 51; ++i) {
+		printf("*");
+	}
+	printf("\n\t*       Escolha a opção desejada:                 *\n\t");
+	for (i = 0; i < 51; ++i) {
+		printf("*");
+	}
+	printf("\n\t*    1 - Criar um usuário                         *");
+	printf("\n\t*    2 - Criar vários usuários                    *");
+	printf("\n\t*    3 - Visualizar usuários cadastrados          *");
+	printf("\n\t*    4 - Visualizar arquivos da última execução   *");
+	printf("\n\t*    5 - Sair                                     *\n");
+	printf("\t");
+	for (i = 0; i < 51; ++i) {
+		printf("*");
+	}
+	printf("\n\n");
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void show_register_users() {
+	FILE *infile;
+	user *users = NULL;
+	int i, aux;
+	unsigned int counter = 0;
+	infile = NULL;
+	infile = open_file(infile, fileregister, "r+");
+
+	do {
+		aux = fgetc(infile);
+		if (aux == '\n') counter++;
+	} while (aux != EOF);
+
+	users = (user*) malloc(counter * sizeof(user));
+	rewind(infile);
+
+	if (counter <= 0) {
+		printf("Não há usuários registrados\nVoltando ao menu\n\n");
+		sleep(2);
+	}
+	else {
+		for (i = 1; i < (int)counter; ++i) {
+			do {
+				aux = fgetc(infile);
+				if (aux == '\n') break;
+			} while (aux != EOF);
+			fscanf(infile, "%u|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]", &users[i].id, users[i].fullname, users[i].firstname, users[i].lastname, users[i].loginsgo, users[i].passwrd, users[i].loginskype, users[i].passwrd, users[i].email, users[i].passwrdstd);
+		}
+
+		for (i = 1; i < (int)counter; ++i) {
+			printf("ID do usuário: %u\n", users[i].id);
+			printf("Nome completo do usuário: %s\n", users[i].fullname);
+			printf("Primeiro nome: %s\n", users[i].firstname);
+			printf("Último nome: %s\n", users[i].lastname);
+			printf("Senha (gerada): %s\n", users[i].passwrd);
+			printf("Senha (padrão): %s\n", users[i].passwrdstd);
+			printf("Login (SGO): %s\n", users[i].loginsgo);
+			printf("Login (Skype): %s\n", users[i].loginskype);
+			printf("Email: %s\n\n", users[i].email);
+			sleep(1);
+		}
+	}
+	fflush_in();
+	getchar();
+	fclose(infile);
+	system("clear || cls");
+	return;
+}

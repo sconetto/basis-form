@@ -23,7 +23,7 @@ enum assignment {
 };
 
 enum contract {
-	agu = 1, basis, cade, camara, cldf, eb, ebcolog, faap, fdc, fnde, funasa, fundacentro, 
+	agu = 1, basis, cade, camara, cldf, eb, ebcolog, faap, fdc, fnde, funasa, fundacentro,
 	gafisa, hub, ibama, marinha, mma, mt, poupex, recall, sdh, stc
 };
 
@@ -142,5 +142,15 @@ void convert_assignement(char *s, unsigned int assignment);
  Função para converter o número do contrato para texto
 */
 void convert_contract(char *s, unsigned int contract);
+
+/*
+ Função para imprimir uma pequena interface visual de menu
+*/
+void menu_interface();
+
+/*
+ Função mostrar os usuários cadastrados no arquivo
+*/
+void show_register_users();
 
 #endif
