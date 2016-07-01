@@ -415,11 +415,11 @@ void make_script_bd(FILE *infile, user profile) {
 	convert_contract(contracttext, contract);
 	if (strcmp(assignmenttext, "NULL") == 0) {
 		if (strcmp(contracttext, "NULL") == 0) {
-			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante],[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
 			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, NULL, NULL, 1)\nGO", profile.loginsgo);
 		}
 		else if (strcmp(contracttext, "NULL") != 0) {
-			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante],[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
 			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, NULL, '%s', 1)\nGO", profile.loginsgo, contracttext);
 		}
 		else {
@@ -428,11 +428,11 @@ void make_script_bd(FILE *infile, user profile) {
 	}
 	else if (strcmp(assignmenttext, "NULL") != 0) {
 		if (strcmp(contracttext, "NULL") == 0) {
-			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante],[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
 			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, '%s', NULL, 1)\nGO", profile.loginsgo, assignmenttext);
 		}
 		else if (strcmp(contracttext, "NULL") != 0) {
-			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante,[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
+			fprintf(infile, "INSERT INTO [jiraproducao].[sgo].[usuario] ([idusuario],[area_requisitante_idarea_requisitante],[matricula],[portaria],[atribuicao],[contrato],[ativo])\n");
 			fprintf(infile, "VALUES ('%s', NULL, NULL, NULL, '%s', '%s', 1)\nGO", profile.loginsgo, assignmenttext, contracttext);
 		}
 		else {

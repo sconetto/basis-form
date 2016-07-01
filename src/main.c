@@ -22,6 +22,7 @@ int main() {
 			printf("Escolha uma opção do menu: ");
 			scanf("%u", &menu);
 		}
+		fflush_in();
 		switch (menu) {
 		case 1:
 			profile = read_new_user();
