@@ -41,6 +41,7 @@ typedef enum contract contract;
 #define fileemail "email"
 #define filescript "script"
 #define filescriptbd "scriptbd"
+#define filelog "log"
 #define passwd_len 10
 #define MAXSTRING 300
 
@@ -104,11 +105,6 @@ user read_new_user();
 FILE* open_file(FILE *infile, char *filename, char *mode);
 
 /*
- Função para fechar o arquivo
-*/
-void close_file(FILE *infile);
-
-/*
  Função para fazer o texto do email de envio para o usuário
 */
 void make_email(FILE *infile, user profile);
@@ -152,5 +148,15 @@ void menu_interface();
  Função mostrar os usuários cadastrados no arquivo
 */
 void show_register_users();
+
+/*
+ Função para criar o log quando vários usuários forem criados
+*/
+void make_log();
+
+/*
+ Função para log de execução do registro de vários usuários
+*/
+void clean_log();
 
 #endif

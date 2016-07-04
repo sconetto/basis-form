@@ -238,8 +238,8 @@ user read_new_user() {
 		make_script(infile, new_user);
 		system("cls || clear");
 	}
-
 	fflush(stdin);
+	fflush_in();
 	printf("Deseja gerar script para criação do usuário (Banco de Dados)? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
@@ -273,6 +273,9 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 	else if (strcmp(filename, filescriptbd) == 0) {
 		infile = fopen("./doc/scriptbdtemp.txt", mode);
 	}
+	else if (strcmp(filename, filelog) == 0) {
+		infile = fopen("./doc/log.txt", mode);
+	}
 	else {
 		/*to implement*/
 	}
@@ -280,11 +283,6 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 		printf("Erro ao abrir o arquivo ou arquivo não encontrado!\nFechando o programa\n");
 	}
 	return infile;
-}
-/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
-void close_file(FILE *infile) {
-	fclose(infile);
-	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void make_email(FILE *infile, user profile) {
@@ -361,7 +359,7 @@ void make_script(FILE *infile, user profile) {
 		printf("Função não encontrada!!\nVoltando à execução...\n\n");
 		sleep(1);
 	}
-	close_file(infile);
+	fclose(infile);
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -442,7 +440,7 @@ void make_script_bd(FILE *infile, user profile) {
 	else {
 		/* nothing */
 	}
-	close_file(infile);
+	fclose(infile);
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -511,6 +509,7 @@ void interface() {
 	}
 	printf("\n");
 	sleep(5);
+	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void convert_assignement(char *s, unsigned int assignment) {
@@ -636,13 +635,13 @@ void menu_interface() {
 	printf("\n\t*    1 - Criar um usuário                         *");
 	printf("\n\t*    2 - Criar vários usuários                    *");
 	printf("\n\t*    3 - Visualizar usuários cadastrados          *");
-	printf("\n\t*    4 - Visualizar arquivos da última execução   *");
-	printf("\n\t*    5 - Sair                                     *\n");
+	printf("\n\t*    4 - Sair                                     *\n");
 	printf("\t");
 	for (i = 0; i < 51; ++i) {
 		printf("*");
 	}
 	printf("\n\n");
+	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void show_register_users() {
@@ -693,3 +692,62 @@ void show_register_users() {
 	system("clear || cls");
 	return;
 }
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void make_log() {
+	FILE *infile = NULL;
+	FILE *readfile = NULL;
+	char character;
+	int i;
+	infile = open_file(infile, filelog, "a+");
+	readfile  = open_file(readfile, fileemail, "r");
+	while ((character = fgetc(readfile)) != EOF) {
+		fputc(character, infile);
+	}
+	fputc('\n', infile);
+	for (i = 0; i < 50; ++i) {
+		fputc('-', infile);
+	}
+	fputc('\n', infile);
+	fclose(readfile);
+	readfile  = open_file(readfile, filescript, "r");
+	while ((character = fgetc(readfile)) != EOF) {
+		fputc(character, infile);
+	}
+	fputc('\n', infile);
+	for (i = 0; i < 50; ++i) {
+		fputc('-', infile);
+	}
+	fputc('\n', infile);
+	fclose(readfile);
+	readfile  = open_file(readfile, filescriptbd, "r");
+	while ((character = fgetc(readfile)) != EOF) {
+		fputc(character, infile);
+	}
+	fputc('\n', infile);
+	for (i = 0; i < 50; ++i) {
+		fputc('-', infile);
+	}
+	fputc('\n', infile);
+	fclose(readfile);
+	fclose(infile);
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void clean_log() {
+	FILE* infile;
+	int status;
+	infile = NULL;
+	status = 1;
+	status = remove("./doc/log.txt");
+	if (status == 0) {
+		infile = open_file(infile, filelog, "w+");
+		fclose(infile);
+		status = 1;
+	}
+	else {
+		printf("Erro ao limpar log\n");
+		status = -1;
+	}
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/

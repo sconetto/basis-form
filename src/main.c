@@ -2,7 +2,10 @@
 
 int main() {
 	unsigned int menu;
+	int quantity;
+	int i;
 	user profile;
+	user *profiles = NULL;
 	setlocale(LC_ALL, "Portuguese");
 	system("cls || clear");
 	clean_temps();
@@ -10,6 +13,7 @@ int main() {
 	system("cls || clear");
 	interface();
 	system("cls || clear");
+	clean_log();
 	do {
 		menu_interface();
 		printf("Escolha uma opção do menu: ");
@@ -32,20 +36,43 @@ int main() {
 			show_user(profile);
 			break;
 		case 2:
+			printf("Quantos usuários deseja cadastrar?: ");
+			scanf("%d", &quantity);
+			fflush_in();
+			profiles = malloc(quantity * sizeof(user));
+			for (i = 0; i < quantity; ++i) {
+				profile = read_new_user();
+				sleep(2);
+				system("cls || clear");
+				printf("Informações do novo usuário: \n");
+				show_user(profile);
+				fflush_in();
+				profiles[i] = profile;
+				make_log();
+				sleep(2);
+				system("cls || clear");
+			}
+			printf("Listando usuários criados: \n");
+			for (i = 0; i < quantity; ++i) {
+				show_user(profiles[i]);
+				printf("\n");
+			}
+			printf("Todos os arquivos dos usuários estão em doc/log.txt!!\n");
+			printf("Aperte ENTER para continuar a execução");
+			getchar();
+			system("cls || clear");
 			break;
 		case 3:
 			system("cls || clear");
 			show_register_users();
 			break;
 		case 4:
-			break;
-		case 5:
 			printf("Terminando a execução...\n");
 			printf("Obrigado por usar o sistema!!!\n\n");
 			break;
 		default:
 			break;
 		}
-	} while (menu != 5);
+	} while (menu != 4);
 	return 0;
 }
