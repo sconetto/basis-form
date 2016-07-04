@@ -496,7 +496,7 @@ void interface() {
 	for (i = 0; i < 40; ++i) {
 		printf("*");
 	}
-	printf("\n* Versão:  0.0.1                       *");
+	printf("\n* Versão:  0.0.2                       *");
 	printf("\n* Autor:   João Pedro Sconetto         *");
 	printf("\n* Contato: joao.sconetto@basis.com.br  * \n*\t   sconetto.joao@gmail.com     *\n");
 	for (i = 0; i < 40; ++i) {
