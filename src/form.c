@@ -687,7 +687,6 @@ void show_register_users() {
 		}
 	}
 	fflush_in();
-	getchar();
 	fclose(infile);
 	system("clear || cls");
 	return;
