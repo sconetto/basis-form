@@ -34,6 +34,9 @@ int main() {
 			system("cls || clear");
 			printf("Informações do novo usuário: \n");
 			show_user(profile);
+			fflush_in();
+			getchar();
+			system("cls || clear");
 			break;
 		case 2:
 			printf("Quantos usuários deseja cadastrar?: ");
