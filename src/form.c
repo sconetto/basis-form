@@ -707,7 +707,11 @@ void make_log(user profile) {
 	fprintf(infile, "Login (SGO): %s\n", profile.loginsgo);
 	fprintf(infile, "Login (Skype): %s\n", profile.loginskype);
 	fprintf(infile, "Email: %s\n\n", profile.email);
-
+	for (i = 0; i < 50; ++i) {
+		fputc('-', infile);
+	}
+	fputc('\n', infile);
+	fputc('\n', infile);
 	readfile  = open_file(readfile, fileemail, "r");
 	while ((character = fgetc(readfile)) != EOF) {
 		fputc(character, infile);
