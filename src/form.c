@@ -692,12 +692,22 @@ void show_register_users() {
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
-void make_log() {
+void make_log(user profile) {
 	FILE *infile = NULL;
 	FILE *readfile = NULL;
 	char character;
 	int i;
 	infile = open_file(infile, filelog, "a+");
+
+	fprintf(infile, "Nome completo do usuário: %s\n", profile.fullname);
+	fprintf(infile, "Primeiro nome: %s\n", profile.firstname);
+	fprintf(infile, "Último nome: %s\n", profile.lastname);
+	fprintf(infile, "Senha (gerada): %s\n", profile.passwrd);
+	fprintf(infile, "Senha (padrão): %s\n", profile.passwrdstd);
+	fprintf(infile, "Login (SGO): %s\n", profile.loginsgo);
+	fprintf(infile, "Login (Skype): %s\n", profile.loginskype);
+	fprintf(infile, "Email: %s\n\n", profile.email);
+
 	readfile  = open_file(readfile, fileemail, "r");
 	while ((character = fgetc(readfile)) != EOF) {
 		fputc(character, infile);

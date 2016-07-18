@@ -152,7 +152,7 @@ void show_register_users();
 /*
  Função para criar o log quando vários usuários forem criados
 */
-void make_log();
+void make_log(user profile);
 
 /*
  Função para log de execução do registro de vários usuários

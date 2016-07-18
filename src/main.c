@@ -51,7 +51,7 @@ int main() {
 				show_user(profile);
 				fflush_in();
 				profiles[i] = profile;
-				make_log();
+				make_log(profile);
 				sleep(2);
 				system("cls || clear");
 			}
