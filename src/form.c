@@ -287,7 +287,7 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void make_email(FILE *infile, user profile) {
 	infile = open_file(infile, fileemail, "w+");
-	fprintf(infile, "Prezado %s\n", profile.fullname);
+	fprintf(infile, "Prezado(a) %s\n", profile.fullname);
 	fprintf(infile, "Segue seu login e senha para acessar o SGO, Sistema de Gestão de Ocorrências da Basis:\n");
 	fprintf(infile, "login: %s\n", profile.loginsgo);
 	fprintf(infile, "senha: %s\n", profile.passwrd);
