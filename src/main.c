@@ -34,6 +34,7 @@ int main() {
 			system("cls || clear");
 			printf("Informações do novo usuário: \n");
 			show_user(profile);
+			make_log(profile);
 			fflush_in();
 			getchar();
 			system("cls || clear");
@@ -74,6 +75,7 @@ int main() {
 			printf("Obrigado por usar o sistema!!!\n\n");
 			break;
 		default:
+			printf("Opção não válida!\n");
 			break;
 		}
 	} while (menu != 4);

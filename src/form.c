@@ -310,7 +310,7 @@ void make_script(FILE *infile, user profile) {
 	fflush_in();
 	printf("Adicione uma descrição para o usuário: ");
 	read_string(desc);
-	printf("Informe a função do usuário (Programador/Analista/Fábrica | Aperte enter ou s para usuário padrão)\nOBS: Procure digitar sem acentos e com minúsculas: ");
+	printf("Informe a função do usuário (Programador/Analista/Fábrica/Arquiteto | Aperte enter ou s para usuário padrão)\nOBS: Procure digitar sem acentos e com minúsculas: ");
 	read_string(function);
 	for (i = 0; i < (int)strlen(function); ++i) {
 		function[i] = tolower(function[i]);
@@ -355,8 +355,23 @@ void make_script(FILE *infile, user profile) {
 		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
 		fprintf(infile, "\"cn=fabricas-externas,cn=Users,dc=basis,dc=com,dc=br\" \"cn=fabrica-%s,cn=Users,dc=basis,dc=com,dc=br\" -uc", contract);
 	}
+	else if (strcmp(function, "arquiteto") == 0) {
+		profile.firstname[0] = toupper(profile.firstname[0]);
+		profile.lastname[0] = toupper(profile.lastname[0]);
+		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		fprintf(infile, "\"cn=basis-arquitetura,cn=Users,dc=basis,dc=com,dc=br\" -uc");
+		printf("Inserido no grupo de Arquitetos Basis\n");
+	}
 	else {
-		printf("Função não encontrada!!\nVoltando à execução...\n\n");
+		printf("Função não encontrada!!\n");
+		printf("O usuário só será incluso no grupos padrões de uso do SGO!!\n");
+		sleep(1);
+		profile.firstname[0] = toupper(profile.firstname[0]);
+		profile.lastname[0] = toupper(profile.lastname[0]);
+		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		printf("Voltando à execução...\n\n");
 		sleep(1);
 	}
 	fclose(infile);
