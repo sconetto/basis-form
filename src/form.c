@@ -276,6 +276,9 @@ FILE* open_file(FILE *infile, char *filename, char *mode) {
 	else if (strcmp(filename, filelog) == 0) {
 		infile = fopen("./doc/log.txt", mode);
 	}
+	else if (strcmp(filename, fileuserdatadom) == 0) {
+		infile = fopen("./doc/userdatabasisdom.csv", mode);
+	}
 	else {
 		/*to implement*/
 	}
@@ -776,6 +779,73 @@ void clean_log() {
 		printf("Erro ao limpar log\n");
 		status = -1;
 	}
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void make_domain_csv(user profile) {
+	FILE *infile = NULL;
+	int i;
+	int j = 0;
+	int namelen, firstlen, lastlen;
+	char firstname[MAXSTRING];
+	char lastname[MAXSTRING];
+
+	namelen = strlen(profile.fullname);
+
+	for (i = 0; i < namelen; i++) {
+		if (profile.fullname[i] == ' ') {
+			break;
+		}
+		firstname[i] = profile.fullname[i];
+	}
+	firstlen = strlen(firstname);
+	firstname[firstlen] = '\0';
+
+	for (i = 0; i < namelen; i++) {
+		if (i >= firstlen + 1) {
+			lastname[j] = profile.fullname[i];
+			j++;
+		}
+	}
+	lastlen = (namelen - firstlen) - 1;
+	lastname[lastlen] = '\0';
+
+	printf("%s\n%s\n", firstname, lastname);
+	infile = open_file(infile, fileuserdatadom, "a+");
+	fprintf(infile, "%s,%s,%s,%s\n", firstname, lastname, profile.email, profile.passwrdstd);
+	fclose(infile);
+	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+void clean_domain_csv() {
+	FILE *infile = NULL;
+	int i;
+	char aux;
+	char *firststring;
+	unsigned int counter = 0;
+
+	infile = open_file(infile, fileuserdatadom, "r");
+
+	do {
+		aux = fgetc(infile);
+		counter++;
+		if (aux == '\n' || aux == EOF) {
+			break;
+		}
+	} while (aux != EOF);
+
+	rewind(infile);
+	firststring = (char*) malloc(counter * sizeof(char));
+	for (i = 0; i < (int)counter; ++i) {
+		firststring[i] = fgetc(infile);
+	}
+	firststring[strlen(firststring)] = '\0';
+
+	fclose(infile);
+
+	infile = open_file(infile, fileuserdatadom, "w");
+	fprintf(infile, "%s", firststring);
+	fclose(infile);
 	return;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/

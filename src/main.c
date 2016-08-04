@@ -14,6 +14,7 @@ int main() {
 	interface();
 	system("cls || clear");
 	clean_log();
+	clean_domain_csv();
 	do {
 		menu_interface();
 		printf("Escolha uma opção do menu: ");
@@ -35,6 +36,7 @@ int main() {
 			printf("Informações do novo usuário: \n");
 			show_user(profile);
 			make_log(profile);
+			make_domain_csv(profile);
 			fflush_in();
 			getchar();
 			system("cls || clear");
@@ -53,6 +55,7 @@ int main() {
 				fflush_in();
 				profiles[i] = profile;
 				make_log(profile);
+				make_domain_csv(profile);
 				sleep(2);
 				system("cls || clear");
 			}

@@ -41,6 +41,7 @@ typedef enum contract contract;
 #define fileemail "email"
 #define filescript "script"
 #define filescriptbd "scriptbd"
+#define fileuserdatadom "userdatabasisdom"
 #define filelog "log"
 #define passwd_len 10
 #define MAXSTRING 300
@@ -158,5 +159,15 @@ void make_log(user profile);
  Função para log de execução do registro de vários usuários
 */
 void clean_log();
+
+/*
+ Função para inserir os usuários registrados no arquivo .csv
+*/
+void make_domain_csv();
+
+/*
+ Função para limpar o arquivo .csv para inclusão de novos usuários
+*/
+void clean_domain_csv();
 
 #endif
