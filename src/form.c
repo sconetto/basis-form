@@ -514,7 +514,7 @@ void interface() {
 	for (i = 0; i < 40; ++i) {
 		printf("*");
 	}
-	printf("\n* Versão:  0.0.2                       *");
+	printf("\n* Versão:  0.0.3                       *");
 	printf("\n* Autor:   João Pedro Sconetto         *");
 	printf("\n* Contato: joao.sconetto@basis.com.br  * \n*\t   sconetto.joao@gmail.com     *\n");
 	for (i = 0; i < 40; ++i) {
@@ -784,33 +784,29 @@ void clean_log() {
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 void make_domain_csv(user profile) {
 	FILE *infile = NULL;
-	int i;
 	int j = 0;
-	int namelen, firstlen, lastlen;
-	char firstname[MAXSTRING];
-	char lastname[MAXSTRING];
+	char *word;
+	char *firstname;
+	char *lastname;
 
-	namelen = strlen(profile.fullname);
+	firstname = (char*) calloc((int)strlen(profile.fullname), sizeof(char));
+	lastname = (char*) calloc((int)strlen(profile.fullname), sizeof(char));
+	word = strtok(profile.fullname, " ");
 
-	for (i = 0; i < namelen; i++) {
-		if (profile.fullname[i] == ' ') {
-			break;
+	while (word != NULL) {
+		if (j == 0) {
+			strcat(firstname, word);
 		}
-		firstname[i] = profile.fullname[i];
-	}
-	firstlen = strlen(firstname);
-	firstname[firstlen] = '\0';
-
-	for (i = 0; i < namelen; i++) {
-		if (i >= firstlen + 1) {
-			lastname[j] = profile.fullname[i];
-			j++;
+		else if (j > 0) {
+			strcat(lastname, word);
+			strcat(lastname, " ");
 		}
+		else {}
+		j += 1;
+		(word = strtok(NULL, " "));
 	}
-	lastlen = (namelen - firstlen) - 1;
-	lastname[lastlen] = '\0';
 
-	printf("%s\n%s\n", firstname, lastname);
+	lastname[(int)strlen(lastname) - 1] = '\0';
 	infile = open_file(infile, fileuserdatadom, "a+");
 	fprintf(infile, "%s,%s,%s,%s\n", firstname, lastname, profile.email, profile.passwrdstd);
 	fclose(infile);

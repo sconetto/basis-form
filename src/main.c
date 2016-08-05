@@ -35,8 +35,8 @@ int main() {
 			system("cls || clear");
 			printf("Informações do novo usuário: \n");
 			show_user(profile);
-			make_log(profile);
 			make_domain_csv(profile);
+			make_log(profile);
 			fflush_in();
 			getchar();
 			system("cls || clear");
@@ -54,8 +54,8 @@ int main() {
 				show_user(profile);
 				fflush_in();
 				profiles[i] = profile;
-				make_log(profile);
 				make_domain_csv(profile);
+				make_log(profile);
 				sleep(2);
 				system("cls || clear");
 			}
