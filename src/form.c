@@ -41,16 +41,16 @@ char *make_passwrd() {
 	new_passwd = (char*) calloc((passwd_len + 1), sizeof(char));
 
 	for (i = 0; i < passwd_len; ++i) {
-		if (i >= 0 && i < 2) {
+		if (i >= 0 && i < 3) {
 			new_passwd[i] = validcharslw[ rand() % strlen(validcharslw)];
 		}
-		else if (i >= 2 && i < 4) {
+		else if (i >= 3 && i < 6) {
 			new_passwd[i] = validcharsup[ rand() % strlen(validcharsup)];
 		}
-		else if (i >= 6 && i < 10) {
+		else if (i >= 8 && i < 12) {
 			new_passwd[i] = validnumbers[ rand() % strlen(validnumbers)];
 		}
-		else if (i >= 4 && i < 6) {
+		else if (i >= 6 && i < 8) {
 			new_passwd[i] = validsymbols[ rand() % strlen(validsymbols)];
 		}
 		new_passwd[i + 1] = 0x0;
@@ -238,7 +238,7 @@ user read_new_user() {
 		make_script(infile, new_user);
 		system("cls || clear");
 	}
-	fflush(stdin);
+
 	fflush_in();
 	printf("Deseja gerar script para criação do usuário (Banco de Dados)? [S\\n]: ");
 	option = getchar();
@@ -373,7 +373,7 @@ void make_script(FILE *infile, user profile) {
 		profile.firstname[0] = toupper(profile.firstname[0]);
 		profile.lastname[0] = toupper(profile.lastname[0]);
 		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
-		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" -uc", profile.email, profile.passwrd, desc);
 		printf("Voltando à execução...\n\n");
 		sleep(1);
 	}
@@ -390,16 +390,16 @@ void make_script_bd(FILE *infile, user profile) {
 	contracttext = (char*)malloc(sizeof(char));
 	infile = open_file(infile, filescriptbd, "w+");
 	fflush_in();
-	printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n5 - Gestor de negócio\n");
-	printf("6 - Requisitante\n7 - Requisitante assistente\n8 - Todos\n");
+	printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n5 - Gestor de contrato\n");
+	printf("6 - Gestor de negócio\n7 - Requisitante\n8 - Requisitante assistente\n9 - Todos\n");
 	printf("Qual atribuição do usuário ?: ");
 	scanf("%u", &assignment);
 	if ((assignment <= 0) || (assignment >= 9)) {
 		printf("Valor de atribuição inválida!!!\n");
 		sleep(1);
 		system("clear || cls");
-		printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n5 - Gestor de negócio\n");
-		printf("6 - Requisitante\n7 - Requisitante assistente\n8 - Todos\n");
+		printf("Atribuições já cadastradas:\n1 - Auditor\n2 - Fiscal requisitante\n3 - Fiscal técnico\n4 - Fiscal técnico assistente\n5 - Gestor de contrato\n");
+		printf("6 - Gestor de negócio\n7 - Requisitante\n8 - Requisitante assistente\n9 - Todos\n");
 		printf("Qual atribuição do usuário ?: ");
 		scanf("%u", &assignment);
 		while ((assignment <= 0) || (assignment >= 9)) {
@@ -408,18 +408,20 @@ void make_script_bd(FILE *infile, user profile) {
 		}
 	}
 	system("clear || cls");
-	printf("Contratos já cadastrados:\n1 - AGU\t\t12 - FUNDACENTRO\n2 - BASIS\t13 - GAFISA\n3 - CADE\t14 - HUB\n");
-	printf("4 - CAMARA\t15 - IBAMA\n5 - CLDF\t16 - MARINHA\n6 - EB\t\t17 - MMA\n7 - EBCOLOG\t18 - MT\n8 - FAAP\t19 - POUPEX\n");
-	printf("9 - FDC\t\t20 - RECALL\n10 - FNDE\t21 - SDH\n11 - FUNASA\t22 - STC\n");
+	printf("Contratos já cadastrados:\n1 - AGU\t\t15 - FUNASA\n2 - BASIS\t16 - FUNDACENTRO\n3 - CADE\t17 - GAFISA\n");
+	printf("4 - CAMARA\t18 - HUB\n5 - CFC\t\t19 - IBAMA\n6 - CIDADES\t20 - MARINHA\n7 - CLDF\t21 - MDIC\n");
+	printf("8 - CNJ\t\t22 - MMA\n9 - EB\t\t23 - MT\n10 - EBCOLOG\t24 - MTPA\n11 - EBSERH\t25 - POUPEX\n12 - FAAP\t26 - RECALL\n");
+	printf("13 - FDC\t27 - SDH\n14 - FNDE\t28 - STC\n");
 	printf("Qual o contrato do usuário ?: ");
 	scanf("%u", &contract);
 	if ((contract <= 0) || (contract >= 23)) {
 		printf("Valor de contrato inválido!!!\n");
 		sleep(1);
 		system("clear || cls");
-		printf("Contratos já cadastrados:\n1 - AGU\t\t12 - FUNDACENTRO\n2 - BASIS\t13 - GAFISA\n3 - CADE\t14 - HUB\n");
-		printf("4 - CAMARA\t15 - IBAMA\n5 - CLDF\t16 - MARINHA\n6 - EB\t\t17 - MMA\n7 - EBCOLOG\t18 - MT\n8 - FAAP\t19 - POUPEX\n");
-		printf("9 - FDC\t\t20 - RECALL\n10 - FNDE\t21 - SDH\n11 - FUNASA\t22 - STC\n");
+		printf("Contratos já cadastrados:\n1 - AGU\t\t15 - FUNASA\n2 - BASIS\t16 - FUNDACENTRO\n3 - CADE\t17 - GAFISA\n");
+		printf("4 - CAMARA\t18 - HUB\n5 - CFC\t\t19 - IBAMA\n6 - CIDADES\t20 - MARINHA\n7 - CLDF\t21 - MDIC\n");
+		printf("8 - CNJ\t\t22 - MMA\n9 - EB\t\t23 - MT\n10 - EBCOLOG\t24 - MTPA\n11 - EBSERH\t25 - POUPEX\n12 - FAAP\t26 - RECALL\n");
+		printf("13 - FDC\t27 - SDH\n14 - FNDE\t28 - STC\n");
 		printf("Qual o contrato do usuário ?: ");
 		scanf("%u", &contract);
 		while ((contract <= 0) || (contract >= 23)) {
@@ -544,7 +546,10 @@ void convert_assignement(char *s, unsigned int assignment) {
 	case fiscaltecassistente:
 		strcpy(s, "fiscal técnico assistente");
 		break;
-	case gestor:
+	case gestorcontrato:
+		strcpy(s, "gestor de contrato");
+		break;
+	case gestornegocio:
 		strcpy(s, "gestor de negócio");
 		break;
 	case requisitante:
@@ -578,14 +583,26 @@ void convert_contract(char *s, unsigned int contract) {
 	case camara:
 		strcpy(s, "CAMARA");
 		break;
+	case cfc:
+		strcpy(s, "CFC");
+		break;
+	case cidades:
+		strcpy(s, "CIDADES");
+		break;
 	case cldf:
 		strcpy(s, "CLDF");
+		break;
+	case cnj:
+		strcpy(s, "CNJ");
 		break;
 	case eb:
 		strcpy(s, "EB");
 		break;
 	case ebcolog:
 		strcpy(s, "EBCOLOG");
+		break;
+	case ebserh:
+		strcpy(s, "EBSERH");
 		break;
 	case faap:
 		strcpy(s, "FAAP");
@@ -614,11 +631,17 @@ void convert_contract(char *s, unsigned int contract) {
 	case marinha:
 		strcpy(s, "MARINHA");
 		break;
+	case mdic:
+		strcpy(s, "MDIC");
+		break;
 	case mma:
 		strcpy(s, "MMA");
 		break;
 	case mt:
 		strcpy(s, "MT");
+		break;
+	case mtpa:
+		strcpy(s, "MTPA");
 		break;
 	case poupex:
 		strcpy(s, "POUPEX");

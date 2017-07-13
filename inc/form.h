@@ -19,12 +19,13 @@ static const char validsymbols[] = "!@#$";
 static const char validnumbers[] = "0123456789";
 
 enum assignment {
-	auditor = 1, fiscalrequisitante, fiscaltecnico, fiscaltecassistente, gestor, requisitante, requisitanteassistente, todos
+	auditor = 1, fiscalrequisitante, fiscaltecnico, fiscaltecassistente, gestorcontrato, gestornegocio, requisitante, requisitanteassistente, todos
 };
 
 enum contract {
-	agu = 1, basis, cade, camara, cldf, eb, ebcolog, faap, fdc, fnde, funasa, fundacentro,
-	gafisa, hub, ibama, marinha, mma, mt, poupex, recall, sdh, stc
+	agu = 1, basis, cade, camara, cfc, cidades, cldf, cnj, eb, ebcolog, ebserh, faap,
+	fdc, fnde, funasa, fundacentro, gafisa, hub, ibama, marinha, mdic, mma, mt, mtpa,
+	poupex, recall, sdh, stc
 };
 
 typedef enum assignment assignment;
@@ -43,7 +44,7 @@ typedef enum contract contract;
 #define filescriptbd "scriptbd"
 #define fileuserdatadom "userdatabasisdom"
 #define filelog "log"
-#define passwd_len 10
+#define passwd_len 12
 #define MAXSTRING 300
 
 struct _user {
