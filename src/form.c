@@ -142,7 +142,7 @@ user read_new_user() {
 	read_string(string);
 	validate_firstname(string);
 	strcpy(new_user.firstname, string);
-	printf("Digite o primeiro último nome do novo usuário (lembre-se de usar minúsculas): ");
+	printf("Digite o último nome do novo usuário (lembre-se de usar minúsculas): ");
 	read_string(string);
 	validate_lastname(string);
 	strcpy(new_user.lastname, string);
@@ -229,6 +229,7 @@ user read_new_user() {
 	}
 	else if (tolower(option) != 's') {
 		system("cls || clear");
+		fflush_in();
 		printf("Pulando esta etapa\n");
 		system("cls || clear");
 	}
@@ -239,7 +240,6 @@ user read_new_user() {
 		system("cls || clear");
 	}
 
-	fflush_in();
 	printf("Deseja gerar script para criação do usuário (Banco de Dados)? [S\\n]: ");
 	option = getchar();
 	if (option == '\n') {
@@ -394,7 +394,7 @@ void make_script_bd(FILE *infile, user profile) {
 	printf("6 - Gestor de negócio\n7 - Requisitante\n8 - Requisitante assistente\n9 - Todos\n");
 	printf("Qual atribuição do usuário ?: ");
 	scanf("%u", &assignment);
-	if ((assignment <= 0) || (assignment >= 9)) {
+	if ((assignment <= 0) || (assignment >= 10)) {
 		printf("Valor de atribuição inválida!!!\n");
 		sleep(1);
 		system("clear || cls");
@@ -402,7 +402,7 @@ void make_script_bd(FILE *infile, user profile) {
 		printf("6 - Gestor de negócio\n7 - Requisitante\n8 - Requisitante assistente\n9 - Todos\n");
 		printf("Qual atribuição do usuário ?: ");
 		scanf("%u", &assignment);
-		while ((assignment <= 0) || (assignment >= 9)) {
+		while ((assignment <= 0) || (assignment >= 10)) {
 			printf("Valor de atribuição inválida!!!\nDigite novamente a atribuição: ");
 			scanf("%u", &assignment);
 		}
@@ -414,7 +414,7 @@ void make_script_bd(FILE *infile, user profile) {
 	printf("13 - FDC\t27 - SDH\n14 - FNDE\t28 - STC\n");
 	printf("Qual o contrato do usuário ?: ");
 	scanf("%u", &contract);
-	if ((contract <= 0) || (contract >= 23)) {
+	if ((contract <= 0) || (contract >= 28)) {
 		printf("Valor de contrato inválido!!!\n");
 		sleep(1);
 		system("clear || cls");
@@ -424,7 +424,7 @@ void make_script_bd(FILE *infile, user profile) {
 		printf("13 - FDC\t27 - SDH\n14 - FNDE\t28 - STC\n");
 		printf("Qual o contrato do usuário ?: ");
 		scanf("%u", &contract);
-		while ((contract <= 0) || (contract >= 23)) {
+		while ((contract <= 0) || (contract >= 28)) {
 			printf("Valor de contrato inválido!!!\nDigite novamente o contrato: ");
 			scanf("%u", &contract);
 		}

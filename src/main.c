@@ -8,6 +8,7 @@ int main() {
 	user *profiles = NULL;
 	setlocale(LC_ALL, "Portuguese");
 	system("cls || clear");
+	system("printf \'\\033[8;45;160t\'");
 	clean_temps();
 	sleep(2);
 	system("cls || clear");

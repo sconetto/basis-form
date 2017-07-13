@@ -19,7 +19,8 @@ static const char validsymbols[] = "!@#$";
 static const char validnumbers[] = "0123456789";
 
 enum assignment {
-	auditor = 1, fiscalrequisitante, fiscaltecnico, fiscaltecassistente, gestorcontrato, gestornegocio, requisitante, requisitanteassistente, todos
+	auditor = 1, fiscalrequisitante, fiscaltecnico, fiscaltecassistente,
+	gestorcontrato, gestornegocio, requisitante, requisitanteassistente, todos
 };
 
 enum contract {
