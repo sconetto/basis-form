@@ -24,9 +24,9 @@ enum assignment {
 };
 
 enum contract {
-	agu = 1, basis, cade, camara, cfc, cidades, cldf, cnj, eb, ebcolog, ebserh, faap,
+	agu = 1, basis, cade, camara, cfc, mcidades, cldf, cnj, eb, ebcolog, ebserh, faap,
 	fdc, fnde, funasa, fundacentro, gafisa, hub, ibama, marinha, mdic, mma, mt, mtpa,
-	poupex, recall, sdh, stc
+	poupex, recall, scce, sdh, seumace, stc
 };
 
 typedef enum assignment assignment;
@@ -171,5 +171,10 @@ void make_domain_csv();
  Função para limpar o arquivo .csv para inclusão de novos usuários
 */
 void clean_domain_csv();
+
+/*
+ Função para criar um usuário vazio a fim de inicilizar usuários na memória
+*/
+user make_blank_user(user blank_user);
 
 #endif

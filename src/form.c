@@ -325,7 +325,7 @@ void make_script(FILE *infile, user profile) {
 		profile.firstname[0] = toupper(profile.firstname[0]);
 		profile.lastname[0] = toupper(profile.lastname[0]);
 		fprintf(infile, "dsadd user \"cn=%s,cn=Users,dc=basis,dc=com,dc=br\" -upn %s@basis.com.br -samid %s -fn \"%s\" -ln \"%s\" -display \"%s\" ", profile.fullname, profile.loginsgo, profile.loginsgo, profile.firstname, profile.lastname, profile.fullname);
-		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" ", profile.email, profile.passwrd, desc);
+		fprintf(infile, "-email \"%s\" -pwd %s -pwdneverexpires yes -desc \"%s\" -memberOf \"cn=Basis,cn=Users,dc=basis,dc=com,dc=br\" \"cn=jira-users,cn=Users,dc=basis,dc=com,dc=br\" -uc", profile.email, profile.passwrd, desc);
 	}
 	else if (strcmp(function, "programador") == 0) {
 		printf("Informe o contrato do Programador (lembre-se de usar minúsculas | escreva o contrato do mesmo modo que no SGO): ");
@@ -408,23 +408,23 @@ void make_script_bd(FILE *infile, user profile) {
 		}
 	}
 	system("clear || cls");
-	printf("Contratos já cadastrados:\n1 - AGU\t\t15 - FUNASA\n2 - BASIS\t16 - FUNDACENTRO\n3 - CADE\t17 - GAFISA\n");
-	printf("4 - CAMARA\t18 - HUB\n5 - CFC\t\t19 - IBAMA\n6 - CIDADES\t20 - MARINHA\n7 - CLDF\t21 - MDIC\n");
-	printf("8 - CNJ\t\t22 - MMA\n9 - EB\t\t23 - MT\n10 - EBCOLOG\t24 - MTPA\n11 - EBSERH\t25 - POUPEX\n12 - FAAP\t26 - RECALL\n");
-	printf("13 - FDC\t27 - SDH\n14 - FNDE\t28 - STC\n");
+	printf("Contratos já cadastrados:\n1 - AGU\t\t16 - FUNDACENTRO\n2 - BASIS\t17 - GAFISA\n3 - CADE\t18 - HUB\n");
+	printf("4 - CAMARA\t19 - IBAMA\n5 - CFC\t\t20 - MARINHA\n6 - MCIDADES\t21 - MDIC\n7 - CLDF\t22 - MMA\n");
+	printf("8 - CNJ\t\t23 - MT\n9 - EB\t\t24 - MTPA\n10 - EBCOLOG\t25 - POUPEX\n11 - EBSERH\t26 - RECALL\n12 - FAAP\t27 - SCCE\n");
+	printf("13 - FDC\t28 - SDH\n14 - FNDE\t29 - SEUMACE\n15 - FUNASA\t30 - STC\n");
 	printf("Qual o contrato do usuário ?: ");
 	scanf("%u", &contract);
-	if ((contract <= 0) || (contract >= 28)) {
+	if ((contract <= 0) || (contract >= 31)) {
 		printf("Valor de contrato inválido!!!\n");
 		sleep(1);
 		system("clear || cls");
-		printf("Contratos já cadastrados:\n1 - AGU\t\t15 - FUNASA\n2 - BASIS\t16 - FUNDACENTRO\n3 - CADE\t17 - GAFISA\n");
-		printf("4 - CAMARA\t18 - HUB\n5 - CFC\t\t19 - IBAMA\n6 - CIDADES\t20 - MARINHA\n7 - CLDF\t21 - MDIC\n");
-		printf("8 - CNJ\t\t22 - MMA\n9 - EB\t\t23 - MT\n10 - EBCOLOG\t24 - MTPA\n11 - EBSERH\t25 - POUPEX\n12 - FAAP\t26 - RECALL\n");
-		printf("13 - FDC\t27 - SDH\n14 - FNDE\t28 - STC\n");
+		printf("Contratos já cadastrados:\n1 - AGU\t\t16 - FUNDACENTRO\n2 - BASIS\t17 - GAFISA\n3 - CADE\t18 - HUB\n");
+		printf("4 - CAMARA\t19 - IBAMA\n5 - CFC\t\t20 - MARINHA\n6 - MCIDADES\t21 - MDIC\n7 - CLDF\t22 - MMA\n");
+		printf("8 - CNJ\t\t23 - MT\n9 - EB\t\t24 - MTPA\n10 - EBCOLOG\t25 - POUPEX\n11 - EBSERH\t26 - RECALL\n12 - FAAP\t27 - SCCE\n");
+		printf("13 - FDC\t28 - SDH\n14 - FNDE\t29 - SEUMACE\n15 - FUNASA\t30 - STC\n");
 		printf("Qual o contrato do usuário ?: ");
 		scanf("%u", &contract);
-		while ((contract <= 0) || (contract >= 28)) {
+		while ((contract <= 0) || (contract >= 31)) {
 			printf("Valor de contrato inválido!!!\nDigite novamente o contrato: ");
 			scanf("%u", &contract);
 		}
@@ -586,8 +586,8 @@ void convert_contract(char *s, unsigned int contract) {
 	case cfc:
 		strcpy(s, "CFC");
 		break;
-	case cidades:
-		strcpy(s, "CIDADES");
+	case mcidades:
+		strcpy(s, "MCIDADES");
 		break;
 	case cldf:
 		strcpy(s, "CLDF");
@@ -649,8 +649,14 @@ void convert_contract(char *s, unsigned int contract) {
 	case recall:
 		strcpy(s, "RECALL");
 		break;
+	case scce:
+		strcpy(s, "SCCE");
+		break;
 	case sdh:
 		strcpy(s, "SDH");
+		break;
+	case seumace:
+		strcpy(s, "SEUMACE");
 		break;
 	case stc:
 		strcpy(s, "STC");
@@ -866,5 +872,18 @@ void clean_domain_csv() {
 	fprintf(infile, "%s", firststring);
 	fclose(infile);
 	return;
+}
+/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+user make_blank_user(user blank_user) {
+  strcpy(blank_user.fullname, "");
+	strcpy(blank_user.passwrd, "");
+	strcpy(blank_user.passwrdstd, passwrdbasis);
+	strcpy(blank_user.loginsgo, "");
+	strcpy(blank_user.loginskype, "");
+	strcpy(blank_user.email, "");
+	strcpy(blank_user.firstname, "");
+	strcpy(blank_user.lastname, "");
+	blank_user.id = (unsigned int) 0;
+	return blank_user;
 }
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/

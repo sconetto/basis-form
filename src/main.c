@@ -5,6 +5,7 @@ int main() {
 	int quantity;
 	int i;
 	user profile;
+	user blank;
 	user *profiles = NULL;
 	setlocale(LC_ALL, "Portuguese");
 	system("cls || clear");
@@ -47,6 +48,10 @@ int main() {
 			scanf("%d", &quantity);
 			fflush_in();
 			profiles = malloc(quantity * sizeof(user));
+			for (i = 0; i < quantity; ++i) {
+				blank = make_blank_user(blank);
+				profiles[i] = blank;
+			}
 			for (i = 0; i < quantity; ++i) {
 				profile = read_new_user();
 				sleep(2);
