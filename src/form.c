@@ -347,7 +347,7 @@ void make_script(FILE *infile, user profile) {
 	}
 	else if (strcmp(function, "fabrica") == 0) {
 		printf("Informe a qual Fábrica o usuário pertence: \n");
-		printf("(AM | BH | BW | CD | CG | CJ | CL | CS | DG | EA | FN | FNDE | JJ | QL | TS | WO | WP): ");
+		printf("(AM | BH | BW | CD | CG | CJ | CL | CS | DG | EA | GE | FN | FNDE | JJ | QL | TS | WO | WP): ");
 		read_string(contract);
 		for (i = 0; i < (int)strlen(function); ++i) {
 			function[i] = tolower(function[i]);
